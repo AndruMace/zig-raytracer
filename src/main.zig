@@ -77,8 +77,10 @@ fn rayColor(r: Ray) Color {
     // if (hit_sphere(point3(0,0,-1), 0.5, r))
     // return color(1, 0, 0);
     const sphere_origin = Vec3.init(0, 0, -1);
-    if (hitSphere(sphere_origin, 0.5, r)) {
-        return Color.init(1, 0, 0);
+    const t = hitSphere(sphere_origin, 0.5, r);
+    if (t > 0) {
+        const n = r.at(t).minus(Vec3.init(0, 0, -1)).unitize();
+        return Color.init(n.x + 1, n.y + 1, n.z + 1).times(0.5);
     }
 
     const unit_direction = r.direction.unitize();
@@ -87,14 +89,18 @@ fn rayColor(r: Ray) Color {
     return Color.one().times(1.0 - a).plus((Color.init(0.5, 0.7, 1.0).times(a)));
 }
 
-fn hitSphere(center: Vec3, radius: f64, ray: Ray) bool {
+fn hitSphere(center: Vec3, radius: f64, ray: Ray) f64 {
     //   bool hit_sphere(const point3& center, double radius, const ray& r) {
     //     vec3 oc = center - r.origin();
     //     auto a = dot(r.direction(), r.direction());
     //     auto b = -2.0 * dot(r.direction(), oc);
     //     auto c = dot(oc, oc) - radius*radius;
     //     auto discriminant = b*b - 4*a*c;
-    //     return (discriminant >= 0);
+    //      if (discriminant < 0) {
+    //        return -1.0;
+    //       } else {
+    //        return (-b - std::sqrt(discriminant) ) / (2.0*a);
+    //       }
     //   }
     const oc = center.minus(ray.origin);
     const a = Vec3.dot(ray.direction, ray.direction);
@@ -102,7 +108,7 @@ fn hitSphere(center: Vec3, radius: f64, ray: Ray) bool {
     const c = Vec3.dot(oc, oc) - radius * radius;
     const discriminant = b * b - 4 * a * c;
 
-    return discriminant >= 0;
+    return if (discriminant < 0) -1.0 else -b - @sqrt(discriminant) / (2.0 * a);
 }
 
 pub fn main() !void {

@@ -12,15 +12,11 @@ pub const Ray = struct {
         return Ray{ .origin = origin, .direction = direction };
     }
 
-    pub fn at(self: *Ray, t: f64) Vector3 {
+    pub fn at(self: Ray, t: f64) Vector3 {
         const pos_at = self.origin.plus(self.direction.times(t));
         return pos_at;
     }
 };
-
-// pub const VVector3 = struct {
-//   e: @Vector(3, f64)
-// }
 
 pub const Vector3 = struct {
     x: f64,
