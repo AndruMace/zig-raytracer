@@ -108,7 +108,7 @@ fn hitSphere(center: Vec3, radius: f64, ray: Ray) f64 {
     const c = Vec3.dot(oc, oc) - radius * radius;
     const discriminant = b * b - 4 * a * c;
 
-    return if (discriminant < 0) -1.0 else -b - @sqrt(discriminant) / (2.0 * a);
+    return if (discriminant < 0) -1.0 else (-b - @sqrt(discriminant)) / (2.0 * a);
 }
 
 pub fn main() !void {

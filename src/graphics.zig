@@ -57,7 +57,7 @@ pub const Vector3 = struct {
     }
 
     pub fn magnitude(self: Vector3) f64 {
-        return @sqrt(sqr(self.x) + sqr(self.y) + sqr(self.z));
+        return @sqrt(sq(self.x) + sq(self.y) + sq(self.z));
     }
 
     pub fn unitize(self: Vector3) Vector3 {
@@ -79,7 +79,7 @@ pub const Vector3 = struct {
     }
 
     // Math utilities
-    fn sqr(n: f64) f64 {
+    fn sq(n: f64) f64 {
         return n * n;
     }
 };
